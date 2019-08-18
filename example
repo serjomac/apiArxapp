@@ -1,0 +1,181 @@
+//require('./global_functions');  //instantiate global functions
+//let express = require('express')
+// const route= express.Router();
+// const route= require("./routes/routes")
+// let app = express();
+// const bodyParser 	= require('body-parser');
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// let http = require('http');
+// let server = http.Server(app);
+
+// let socketIO = require('socket.io');
+// let io = socketIO(server);
+
+
+/* CONTROLADORES *****/
+
+// const PLUController	= require('./controllers/PLUController');
+// const UserController	= require('./controllers/UserController');
+// const MesaController	= require('./controllers/MesaController');
+// const ComandaController	= require('./controllers/ComandaController');
+// const ClientController	= require('./controllers/ClientController');
+
+
+
+
+
+
+// app.use('/', route);
+
+/****RUTAS   *** */
+
+// route.get('/', function(req, res, next, io) {
+// 	res.json({status:"success", message:"Parcel Pending API", data:{"version_number":"v1.0.0"}})
+
+	// io.on('connection', (socket) => {
+	// 	console.log('user connected');
+	
+	// 	socket.on('new user', (message) => {
+	// 	  console.log(message);
+	// 	});
+	// });
+	
+	
+  //});
+
+
+// route.post("/plu", PLUController.read);
+// route.post("/login", UserController.login);
+// route.post("/mesa", MesaController.read);
+// route.get("/v1/mesa", MesaController.read);
+// route.post("/mesa/id", MesaController.mesaById);
+// route.post("/comanda/create", ComandaController.create);
+// route.post("/comanda/idMesa", ComandaController.getByMesa);
+// route.post("/comanda/update", ComandaController.update);
+// route.post("/comanda/updateEstado", ComandaController.updateEstado);
+
+// route.post("/cliente/cedula", ClientController.getByCedula);
+// route.post("/cliente/create", ClientController.create);
+
+
+// const port = process.env.PORT || 8080;
+
+
+// app.listen(port, () => {
+// 	console.log(`started on port: ${port}`);
+// });
+require('./global_functions');  //instantiate global functions
+
+const express = require('express');
+const bodyparser = require("body-parser");
+
+
+var app = express();
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({extended: false}));
+
+const v1 = require('./routes/routes');
+
+// CORS
+
+const route= express.Router()
+  
+const PLUController	= require('./controllers/PLUController');
+const UserController	= require('./controllers/UserController');
+const MesaController	= require('./controllers/MesaController');
+const ComandaController	= require('./controllers/ComandaController');
+const ClientController	= require('./controllers/ClientController');
+app.use(route)
+
+app.use('/', function(req, res){
+	res.statusCode = 200;//send the appropriate status code
+	res.json({status:"success", message:"Pending Api ..."})
+});
+// route.post("/plu", PLUController.read);
+// route.post("/login", UserController.login);
+// route.post("/mesa", MesaController.read);
+route.get("/mesa", MesaController.read);
+// route.post("/mesa/id", MesaController.mesaById);
+// route.post("/comanda/create", ComandaController.create);
+//  route.post("/comanda/idMesa", ComandaController.getByMesa);
+//  route.post("/comanda/update", ComandaController.update);
+//  route.post("/comanda/updateEstado", ComandaController.updateEstado);
+
+//  route.post("/cliente/cedula", ClientController.getByCedula);
+//  route.post("/cliente/create", ClientController.create);
+var port = process.env.PORT || 8080;
+app.listen(port,function() {
+  console.log("app running on port:");
+  console.log(port);
+});
+
+
+// app.listen(app.post('port'), function(){
+//   console.log('Express on localhost:' +
+//               app.post('port'));
+// });
+  // app.listen(3000, function() {
+  //   console.log('Aplicación ejemplo, escuchando el puerto 3000!');
+  // });
+
+module.exports= app;
+
+
+
+
+
+
+
+
+
+
+
+require('./global_functions');  //instantiate global functions
+var express = require ('express');
+var app = express();
+var route= express.Router()
+var path = require('path');
+//add bodyParser for use of GET & POST
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true }));
+const cors = require('cors');
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+let http = require('http');
+let server = http.Server(app);
+
+let socketIO = require('socket.io');
+let io = socketIO(server);
+	io.on('connection', (socket) => {
+		console.log('user connected');
+	
+		socket.on('new user', (message) => {
+		  console.log(message);
+		});
+	});
+
+
+const knex= require('./db/knex');
+
+app.set('port', process.env.PORT || 8080);
+//** REQUERIMIENTOS DE ARCHIVOS ROUTES **
+app.use(cors({origin: '*'}));
+
+const PLUController	= require('./controllers/PLUController');
+const UserController	= require('./controllers/UserController');
+const MesaController	= require('./controllers/MesaController');
+const ComandaController	= require('./controllers/ComandaController');
+const ClientController	= require('./controllers/ClientController');
+
+//**ENRUTAMIENTO**
+
+app.use(route);
+route.get("/mesa", MesaController.read )
+
+
+        app.listen(app.get('port'), function(){
+            console.log('Express on localhost:' +
+                        app.get('port'));
+        });
