@@ -16,7 +16,7 @@ app.use(cors({origin: '*'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const port = process.env.PORT || 3004;
+const port = process.env.PORT || 3010;
 route.get("/", function(req,res,next){
   res.json({status:"succes", message:"Parcel Pending Api"})
 })

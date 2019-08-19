@@ -10,11 +10,19 @@ io.on('connection', (socket) => {
   });
   
 //io.emit("result","todo bien");
+
+  socket.on("enviarNotificacion", (notificacon)=> {
+    io.emit("notificacion", notificacon);
+  })
 });
 socketAPI.sendRes= function(data,socket){
   console.log("enviando data")
   io.emit("result", data)
 }
+
+
+
+
 socketAPI.sendEstaMesa= function(data,socket){
   console.log("enviando data")
   io.emit("estadoMesa", data)

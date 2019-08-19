@@ -40,5 +40,5 @@ const postNotificaciones = async function(req, res){
 	})
 }
 
-
 module.exports.postNotificaciones = postNotificaciones;
+
